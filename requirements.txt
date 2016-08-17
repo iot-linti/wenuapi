@@ -5,3 +5,6 @@ passlib
 mysql-python
 influxdb
 gunicorn
+iso8601
+paho_mqtt
+requests
