@@ -42,6 +42,8 @@ try:
             client.publish('linti/ipv6/temp', msj)
 
         time.sleep(60)
+except Exception as e:
+    time.sleep(60)
 finally:
     # Pase lo que pase, aunque ocurra una excepción frenamos el thread
     # de PAHO MQTT
