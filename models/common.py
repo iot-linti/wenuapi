@@ -20,7 +20,7 @@ class CommonColumns(Base):
 
 class User(CommonColumns):
     __tablename__ = 'user'
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    _id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(80))
     password = Column(PasswordType(schemes=['pbkdf2_sha512']))
 

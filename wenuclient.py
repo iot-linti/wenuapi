@@ -1,12 +1,23 @@
 from functools import wraps
 import json
 import requests
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+logging.Logger(__name__, logging.DEBUG)
 
 
 def validate_and_jsonify(func):
     @wraps(func)
     def closure(self, route, *args, **kwargs):
+        logger = logging.getLogger(__name__)
         http_request = func(self, route, *args, **kwargs)
+        logger.debug(
+            'Request to route %s returned status %d',
+            route,
+            http_request.status_code,
+        )
+        logger.debug(http_request.text)
         assert http_request.status_code == 200 or http_request.status_code == 201
         return json.loads(http_request.text)
 
@@ -16,9 +27,21 @@ def validate_and_jsonify(func):
 class Entity(object):
     def __init__(self, **kwargs):
         self.fields = kwargs
+        self.initialized = True
 
     def __getattr__(self, attr):
-        return self.fields[attr]
+        try:
+            return self.fields[attr]
+        except KeyError:
+            raise AttributeError(
+                '{} has no attribute {}'.format(type(self), attr)
+            )
+
+    def __setattr__(self, attr, val):
+        if 'initialized' in self.__dict__ and attr in self.fields:
+            self.fields[attr] = val
+        else:
+            object.__setattr__(self, attr, val)
 
     @classmethod
     def spawn_subclass(cls, title, link, server):
@@ -39,9 +62,20 @@ class Entity(object):
     def __str__(self):
         return str(self.fields)
 
-    def commit(self):
+    def regular_fields(self):
+        return {k: v for k, v in self.fields.items() if not k.startswith('_')}
+
+    def create(self):
         response = self.server.post(self.link, json=self.fields)
         self.fields.update(response)
+        return response
+
+    def save(self):
+        response = self.server.put(
+            '{}/{}'.format(self.link, self.fields['_id']),
+            json=self.regular_fields(),
+            etag=self.fields['_etag'],
+        )
         return response
 
 
@@ -55,6 +89,14 @@ class Server(object):
         self.url = url
         self.entities = self._spawn_entities()
 
+    def __getattr__(self, attr):
+        try:
+            return self.entities[attr]
+        except KeyError:
+            raise AttributeError(
+                '{} has no attribute {}'.format(type(self), attr)
+            )
+
     def _validate(self, response):
         assert response.status_code == 200
 
@@ -62,34 +104,33 @@ class Server(object):
         http_response = self.session.get(self.url)
         self._validate(http_response)
         response = json.loads(http_response.text)
-        titles = []
+        entities = {}
 
         for child in response['_links']['child']:
             title = child['title'].title().replace('_', '')
-            titles.append(title)
-            setattr(self, title, Entity.spawn_subclass(
+            entities[title] = Entity.spawn_subclass(
                 title=title,
                 link=child['href'],
                 server=self,
-            ))
+            )
 
-        return titles
+        return entities
 
     @validate_and_jsonify
     def get(self, route):
         return self.session.get('/'.join((self.url, route)))
 
     @validate_and_jsonify
-    def put(self, route):
-        return self.session.put('/'.join((self.url, route)))
+    def put(self, route, json, etag):
+        return self.session.put(
+            '/'.join((self.url, route)),
+            json=json,
+            headers={'If-Match': etag}
+        )
 
     @validate_and_jsonify
     def post(self, route, json):
         return self.session.post('/'.join((self.url, route)), json=json)
-
-    @validate_and_jsonify
-    def delete(self, route):
-        return self.session.delete('/'.join((self.url, route)))
 
 
 if __name__ == '__main__':

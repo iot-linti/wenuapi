@@ -2,7 +2,6 @@ from .common import CommonColumns
 from sqlalchemy import (
     Column,
     Integer,
-    ForeignKey,
     Boolean,
 )
 
@@ -10,6 +9,6 @@ from sqlalchemy import (
 class Action(CommonColumns):
     __tablename__ = 'action'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    mote_id = Column(Integer)  # , ForeignKey('mote._id'))
-    level_id = Column(Integer)  # , ForeignKey('level._id'))
+    mote_id = Column(Integer)
+    level_id = Column(Integer)
     turn_off = Column(Boolean)

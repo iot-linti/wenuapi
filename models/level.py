@@ -1,9 +1,11 @@
 from .common import CommonColumns
+from .mote import Mote
 from sqlalchemy import (
     Column,
     String,
     Integer,
 )
+from sqlalchemy.orm import relationship
 
 
 class Level(CommonColumns):

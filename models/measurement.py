@@ -2,7 +2,6 @@ from .common import CommonColumns
 from sqlalchemy import (
     Column,
     Integer,
-    ForeignKey,
     Boolean,
     Float,
 )
