@@ -3,12 +3,13 @@ from sqlalchemy import (
     Column,
     Integer,
     Boolean,
+    String,
 )
 
 
 class Action(CommonColumns):
     __tablename__ = 'action'
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    _id = Column(Integer, primary_key=True, autoincrement=True)
     mote_id = Column(Integer)
-    level_id = Column(Integer)
-    turn_off = Column(Boolean)
+    command = Column(String)
+    arguments = Column(String)
