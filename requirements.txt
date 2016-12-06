@@ -1,3 +1,6 @@
 SQLAlchemy
 SQLAlchemy-Utils
 eve-sqlalchemy
+passlib
+mysql-python
+influxdb

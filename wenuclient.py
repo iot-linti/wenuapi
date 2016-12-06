@@ -87,7 +87,10 @@ class Server(object):
             self.session = session
 
         self.url = url
-        self.entities = self._spawn_entities()
+        self.entities = self._spawn_entities(insert=[{
+            u'title': u'Measurement',
+            u'href': u'measurement',
+        }])
 
     def __getattr__(self, attr):
         try:
@@ -100,11 +103,18 @@ class Server(object):
     def _validate(self, response):
         assert response.status_code == 200
 
-    def _spawn_entities(self):
+    def _spawn_entities(self, insert=None):
         http_response = self.session.get(self.url)
         self._validate(http_response)
         response = json.loads(http_response.text)
         entities = {}
+
+        if insert is not None:
+            for entry in insert:
+                response['_links']['child'].append({
+                    'title': entry['title'],
+                    'href': entry['href'],
+                })
 
         for child in response['_links']['child']:
             title = child['title'].title().replace('_', '')

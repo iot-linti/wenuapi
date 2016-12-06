@@ -8,7 +8,6 @@ app = Eve(data=SQL, settings=settings.SETTINGS)
 db = app.data.driver
 Base.metadata.bind = db.engine
 db.Model = Base
-Base.metadata.create_all(db.engine)
 
 if settings.use_influxdb:
     # Register influx for /measurements
@@ -20,5 +19,12 @@ if settings.use_influxdb:
         settings.influxdb_db,
         app,
     )
+else:
+    registerSchema(Measurement.__tablename__)(Measurement)
+    settings.SETTINGS['DOMAIN']['measurement'] = Measurement._eve_schema['measurement']
+
+Base.metadata.drop_all(db.engine)
+Base.metadata.create_all(db.engine)
+
 
 app.run(debug=True)

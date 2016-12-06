@@ -20,6 +20,15 @@ for mote in motes:
     moteobj = server.Mote(**mote)
     moteobj.create()
 
+levels = [{
+    'map': random.choice(string.ascii_letters),
+} for i in range(5)]
+
+for level in levels:
+    levelobj = server.Level(**level)
+    levelobj.create()
+
+
 server.Action(mote_id=1, command='turn_off', arguments='').create()
 server.Action(mote_id=2, command='turn_off', arguments='').create()
 server.Action(mote_id=3, command='turn_off', arguments='').create()

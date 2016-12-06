@@ -19,8 +19,6 @@ database_uri = 'mysql://{}:{}@localhost/wenu'.format(
 registerSchema(User.__tablename__)(User)
 registerSchema(Action.__tablename__)(Action)
 registerSchema(Level.__tablename__)(Level)
-if not use_influxdb:
-    registerSchema(Measurement.__tablename__)(Measurement)
 registerSchema(Mote.__tablename__)(Mote)
 
 SETTINGS = {
@@ -35,5 +33,3 @@ SETTINGS = {
     'SQLALCHEMY_DATABASE_URI': database_uri,
 }
 
-if not use_influxdb:
-    SETTINGS['DOMAIN']['measurement'] = Measurement._eve_schema['measurement']
