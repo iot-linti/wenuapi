@@ -1,6 +1,6 @@
 from eve_sqlalchemy.decorators import registerSchema
 from models.action import Action
-from models.common import User
+from models.user import User
 from models.level import Level
 from models.measurement import Measurement
 from models.mote import Mote

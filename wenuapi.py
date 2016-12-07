@@ -3,8 +3,9 @@ from eve_sqlalchemy import SQL
 from influx_db_handler import InfluxDBHandler
 from models.common import Base
 import settings
+import auth
 
-app = Eve(data=SQL, settings=settings.SETTINGS)
+app = Eve(data=SQL, settings=settings.SETTINGS, auth=auth.WenuBasicAuth)
 db = app.data.driver
 Base.metadata.bind = db.engine
 db.Model = Base
