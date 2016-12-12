@@ -1,9 +1,8 @@
-from models.common import User
-from models.common import Base
 from sqlalchemy_utils.types import Password
 from unittest import TestCase
 from . import testdb
-
+from wenuapi.models.common import Base
+from wenuapi.models.user import User
 
 class TestUser(TestCase):
     def setUp(self):

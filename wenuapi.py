@@ -1,9 +1,9 @@
 from eve import Eve
 from eve_sqlalchemy import SQL
-from influx_db_handler import InfluxDBHandler
-from models.common import Base
-import settings
-import auth
+from wenuapi.influx_db_handler import InfluxDBHandler
+from wenuapi.models.common import Base
+import wenuapi.settings as settings
+import wenuapi.auth as auth
 
 app = Eve(data=SQL, settings=settings.SETTINGS, auth=auth.WenuBasicAuth)
 db = app.data.driver
