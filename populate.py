@@ -33,3 +33,5 @@ server.Action(mote_id=1, command='turn_off', arguments='').create()
 server.Action(mote_id=2, command='turn_off', arguments='').create()
 server.Action(mote_id=3, command='turn_off', arguments='').create()
 server.Action(mote_id=4, command='turn_off', arguments='').create()
+
+server.User(username='admin', password='admin').create()

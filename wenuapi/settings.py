@@ -23,7 +23,6 @@ registerSchema(Mote.__tablename__)(Mote)
 
 SETTINGS = {
     'DOMAIN': {
-        'user': User._eve_schema['user'],
         'action': Action._eve_schema['action'],
         'level': Level._eve_schema['level'],
         'mote': Mote._eve_schema['mote'],
