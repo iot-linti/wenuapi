@@ -87,10 +87,11 @@ class Server(object):
             self.session = session
 
         self.url = url
-        self.entities = self._spawn_entities(insert=[{
-            u'title': u'Measurement',
-            u'href': u'measurement',
-        }])
+	extra_entities = [
+            {u'title': u'Measurement', u'href': u'measurement'},
+	]
+        self.entities = self._spawn_entities(insert=extra_entities)
+
 
     def __getattr__(self, attr):
         try:
