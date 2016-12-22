@@ -4,3 +4,4 @@ eve-sqlalchemy
 passlib
 mysql-python
 influxdb
+gunicorn
