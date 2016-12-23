@@ -1,4 +1,5 @@
 from influxdb import InfluxDBClient
+from .auth import requires_auth
 import json
 
 
@@ -8,9 +9,9 @@ class InfluxDBHandler(object):
         self.username = username
         self.password = password
         self.influx = InfluxDBClient(host, port, username, password, db)
-
         app.route('/measurement', methods=['GET'])(self.list)
 
+    @requires_auth
     def list(self):
         result = self.influx.query(
             'SELECT * FROM medicion ORDER BY time DESC LIMIT 50'

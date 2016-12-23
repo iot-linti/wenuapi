@@ -26,3 +26,20 @@ class User(CommonColumns):
         else:
             user = user if user.password == password else None
         return user
+
+    @classmethod
+    def set_admin(cls, password, session=None):
+        if session is None:
+            session = app.data.driver.session
+
+        try:
+            user = session.query(User).filter(User.username == 'admin').one()
+        except NoResultFound:
+            user = User(username='admin', password=password)
+        else:
+            user.password = password
+        finally:
+            session.add(user)
+            session.commit()
+
+        return user

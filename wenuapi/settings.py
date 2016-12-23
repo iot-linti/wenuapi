@@ -16,6 +16,9 @@ database_uri = 'mysql://{}:{}@localhost/wenuapi'.format(
     database_password,
 )
 
+# Only used in measurement by the moment
+realm = 'eve'
+
 registerSchema(User.__tablename__)(User)
 registerSchema(Action.__tablename__)(Action)
 registerSchema(Level.__tablename__)(Level)
@@ -30,5 +33,6 @@ SETTINGS = {
     'RESOURCE_METHODS': ['GET', 'POST'],
     'ITEM_METHODS': ['GET', 'PUT'],
     'SQLALCHEMY_DATABASE_URI': database_uri,
+    'XML': False,
 }
 

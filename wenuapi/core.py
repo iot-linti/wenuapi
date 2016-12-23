@@ -5,7 +5,7 @@ from .models.common import Base
 from eve import Eve
 from eve_sqlalchemy import SQL
 
-def build_app(disable_auth=True):
+def build_app(disable_auth=False):
     parameters = {
         'data': SQL,
         'settings': settings.SETTINGS,
