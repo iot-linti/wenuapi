@@ -25,7 +25,7 @@ def main(args, session=None):
     elif args.set_admin:
         session = app.data.driver.session if session is None else session
         passwd = getpass.getpass('Password:')
-	User.set_admin(passwd, session=session)
+        User.set_admin(passwd, session=session)
     elif args.serve:
         app.run(debug=args.debug)
 
