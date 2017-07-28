@@ -6,28 +6,32 @@ import requests
 import time
 import iso8601
 
-server = '163.10.20.206'
+server = 'localhost'
 port = 1883
-DELAY = 60
 
-while True:
-    try:
-        client = mqtt.Client(client_id='linti_control')
-        client.connect(server, port)
-        client.loop_start()  # Maneja eventos y reconexiones
+client = mqtt.Client(client_id='linti_control')
+client.connect(server, port)
+client.loop_start()  # Maneja eventos y reconexiones
 
-        previous_check = None
+previous_check = None
 
-        while True:
-            URL = 'http://clima.info.unlp.edu.ar/last?lang=es'
+try:
+    while True:
+        URL = 'http://clima.info.unlp.edu.ar/last?lang=es'
+        try:
+            print('peticion')
             req = requests.get(URL)
+        except requests.exceptions.HTTPError as e:
+            print(e.message)
+        else:
             weather = json.loads(req.content)
+            print(weather)
             captured_date = iso8601.parse_date(weather['captured_at'])
 
             if previous_check is not None and captured_date <= previous_check:
                 # Si ya mandamos esta información a MQTT salteamos una
                 # iteración
-                time.sleep(DELAY)
+                time.sleep(60)
                 continue
 
             previous_check = captured_date
@@ -40,10 +44,8 @@ while True:
             })
             client.publish('linti/ipv6/temp', msj)
 
-    except Exception as e:
-        print(str(e))
-    finally:
-        time.sleep(DELAY)
-
-# Detener el thread de PAHO MQTT
-client.loop_stop()
+        time.sleep(60)
+finally:
+    # Pase lo que pase, aunque ocurra una excepción frenamos el thread
+    # de PAHO MQTT
+    client.loop_stop()
