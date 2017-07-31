@@ -6,10 +6,11 @@ from sqlalchemy import (
     String,
 )
 
-
 class Action(CommonColumns):
     __tablename__ = 'action'
     _id = Column(Integer, primary_key=True, autoincrement=True)
     mote_id = Column(Integer)
     command = Column(String(80))
     arguments = Column(String(80))
+    viewed = Column(Boolean,default=False)
+

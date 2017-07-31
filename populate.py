@@ -2,7 +2,7 @@ import wenuclient
 import random
 import string
 
-server = wenuclient.Server('http://localhost:5000')
+server = wenuclient.Client('http://localhost:8080')
 
 motes = [{
     'level_id': i,
@@ -29,9 +29,13 @@ for level in levels:
     levelobj.create()
 
 
+server.Role(rolename='admin').create()
+server.Role(rolename='user').create()
+
 server.Action(mote_id=1, command='turn_off', arguments='').create()
 server.Action(mote_id=2, command='turn_off', arguments='').create()
 server.Action(mote_id=3, command='turn_off', arguments='').create()
 server.Action(mote_id=4, command='turn_off', arguments='').create()
 
-server.User(username='admin', password='C=Q&4K93x?O').create()
+server.User(username='admin', password= 1234).create()
+server.Roletable(user_id=1,role_id=1).create()

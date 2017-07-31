@@ -27,7 +27,7 @@ def main(args, session=None):
         passwd = getpass.getpass('Password:')
         User.set_admin(passwd, session=session)
     elif args.serve:
-        app.run(debug=args.debug)
+        app.run(host='0.0.0.0',port=8080,debug=args.debug)
 
 if __name__ == '__main__':
     parser = build_parser()

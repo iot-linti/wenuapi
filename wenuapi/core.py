@@ -1,22 +1,33 @@
-from . import auth
+from .auth import token_auth
 from . import settings
 from .influx_db_handler import InfluxDBHandler
 from .models.common import Base
 from eve import Eve
 from eve_sqlalchemy import SQL
+from eve_sqlalchemy.validation import ValidatorSQL
+from . import tasks
+from . import register
 
 def build_app(disable_auth=False):
     parameters = {
+        'validator':ValidatorSQL,
         'data': SQL,
         'settings': settings.SETTINGS,
     }
     if not disable_auth:
-        parameters['auth'] = auth.WenuBasicAuth
+        parameters['auth'] = token_auth.TokenAuth
 
     app = Eve(**parameters)
+
+    tasks.set_on_insert_account_token(app)
+    register.log_user(app)
+
     db = app.data.driver
     Base.metadata.bind = db.engine
     db.Model = Base
+    db.create_all()
+
+
 
     if settings.use_influxdb:
         # Register influx for /measurements
