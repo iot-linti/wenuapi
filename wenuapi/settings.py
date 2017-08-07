@@ -15,7 +15,8 @@ influxdb_host = 'influxdb.linti.unlp.edu.ar'
 influxdb_port = '8086'
 influxdb_db = 'uso_racional'
 #database_uri = 'sqlite://'
-database_uri = 'mysql://{}:{}@localhost/wenuapi2'.format(
+#database_uri = 'mysql://{}:{}@localhost/wenuapi2'.format(
+database_uri = 'mysql://{}:{}@localhost/wenuapi'.format(
     database_username,
     database_password,
 )
@@ -47,12 +48,11 @@ action.update({
     })
 
 user.update({
-    'allowed_roles': ['admin', 'user'],
-    'allowed_item_roles': ['admin', 'user'],
+    'allowed_roles': ['admin'],
+    'allowed_item_roles': ['admin'],
     'public_methods': ['POST'],
     'resource_methods' : ['POST','GET','DELETE'],
     'item_methods': ['GET','DELETE','PUT'],
-    'auth_field' : 'username',
     'data_relation' : {'resource': 'role',
                       'field': '_id',
                       'embeddable': True}

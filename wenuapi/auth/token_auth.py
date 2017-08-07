@@ -17,10 +17,6 @@ from itsdangerous import SignatureExpired, BadSignature
 class TokenAuth(TokenAuth):
     def check_auth(self, token, allowed_roles, resource, method):
         user = User.token_login(token,resource,method,allowed_roles)
-        if user and resource == 'user':
-            isAdmin = user.isAdmin()
-            if((isAdmin and request.args.get('list') == None) or not isAdmin):
-                self.set_request_auth_value(user.username)
         return user
 
 def authenticate():
