@@ -48,30 +48,26 @@ def reParser(string):
     return array
 
 def flask_to_influxdb_query(args):
-    # FIXME: only supports simple where statements
+    query = ""
     query_args = []
     where = args.get('where')
-    limit = None
-    order = None
-    offset = None
+    order=offset=None
+    limit = 40
+
+    if args.get('sort') is not None:
+        order = args.get('sort')
+        if order[0] == '-':
+            order_type = "DESC"
+            order = order[1:]
+        else:
+            order_type = "ASC"
+    if args.get('max_results') is not None:
+        limit = int(args.get('max_results'))
+    if args.get('page') is not None:
+        offset = (int(args.get('page')) - 1) * limit
+
     if where is not None:
         where_args = json.loads(where, object_pairs_hook=OrderedDict)
-        if 'ORDER_DESC' in where_args:
-            order = where_args['ORDER_DESC']
-            order_type = "DESC"
-            del where_args['ORDER_DESC']
-        if 'ORDER_ASC' in where_args:
-            order = where_args['ORDER_ASC']
-            order_type = "ASC"
-            del where_args['ORDER_ASC']
-        if 'LIMIT' in where_args:
-            limit = where_args['LIMIT']
-            del where_args['LIMIT']
-        if 'OFFSET' in where_args:
-            if limit:
-                offset = where_args['OFFSET']
-                print 'Hay limit y offset'
-            del where_args['OFFSET']
         where_condition = []
         for key, val in where_args.items():
             if key in translator:
@@ -80,12 +76,14 @@ def flask_to_influxdb_query(args):
         if where_condition:
             query_args.extend(('WHERE', ' AND '.join(where_condition)))
             query = ' '.join(query_args)
-            if order:
-                query = "{} ORDER BY {} {}".format(query, order,order_type)
-            if limit:
-                query = "{} LIMIT {}".format(query,limit)
-                if offset:
-                    query = "{} OFFSET {}".format(query,offset)
+
+    if order:
+        query = "{} ORDER BY {} {}".format(query, order,order_type)
+    if limit:
+        query = "{} LIMIT {}".format(query,limit)
+    if offset:
+        query = "{} OFFSET {}".format(query,offset)
+
     return query
 
 class InfluxDBHandler(object):
