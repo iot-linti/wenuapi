@@ -38,8 +38,8 @@ class User(CommonColumns):
             user = User(username='admin', password=password)
         else:
             user.password = password
-        finally:
-            session.add(user)
-            session.commit()
+
+        session.add(user)
+        session.commit()
 
         return user
