@@ -128,6 +128,8 @@ class User(CommonColumns):
     def set_admin(cls, password, session=None):
         if session is None:
             session = app.data.driver.session
+
+        user = None
         try:
             user = session.query(User).filter(User.username == 'admin').one()
         except NoResultFound:
@@ -135,9 +137,10 @@ class User(CommonColumns):
         else:
             user.password = password
         finally:
-            user.token = User.generate_token(username)
-            session.add(user)
-            session.commit()
+            if user is not None:
+                user.token = User.generate_token(username)
+                session.add(user)
+                session.commit()
         return user
 
 
