@@ -138,7 +138,7 @@ class User(CommonColumns):
             user.password = password
         finally:
             if user is not None:
-                user.token = User.generate_token(username)
+                user.token = User.generate_token('admin')
                 session.add(user)
                 session.commit()
         return user

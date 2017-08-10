@@ -47,7 +47,7 @@ def reParser(string):
     array.append(string)
     return array
 
-def flask_to_influxdb_query(args):
+def flask_to_influxdb_query(args, translator=translator):
     query = ""
     query_args = []
     where = args.get('where')
@@ -72,7 +72,7 @@ def flask_to_influxdb_query(args):
         for key, val in where_args.items():
             if key in translator:
                 valDic = reParser(val)
-                where_condition.append(" {} {} {}".format(translator[key],valDic[0],valDic[1]))
+                where_condition.append("{} {} {}".format(translator[key],valDic[0],valDic[1]))
         if where_condition:
             query_args.extend(('WHERE', ' AND '.join(where_condition)))
             query = ' '.join(query_args)

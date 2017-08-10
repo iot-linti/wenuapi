@@ -1,10 +1,10 @@
 from sqlalchemy_utils.types import Password
 import unittest
 from __init__ import testdb
-from wenuapi.models.common import Base
-from wenuapi.models.user import User
-from wenuapi.models.role import Role
-from wenuapi.models.roletable import RoleTable
+from ..wenuapi.models.common import Base
+from ..wenuapi.models.user import User
+from ..wenuapi.models.role import Role
+from ..wenuapi.models.roletable import RoleTable
 
 import time
 
@@ -19,7 +19,7 @@ class TestUser(unittest.TestCase):
         self.roleList = ['admin','user']
         self.token = User.generate_token(self.username)
 
-        self.role = Role(rolname=self.rolename)
+        self.role = Role(rolename=self.rolename)
         self.user = User(username=self.username, password=self.password,token=self.token)
         self.user.roles.append(self.role)
         self.session.add(self.user)
@@ -75,7 +75,7 @@ class TestUser(unittest.TestCase):
         self.assertTrue(self.user.isAdmin())
 
     def test_is_admin_returns_falsey(self):
-        self.role.rolname = 'admino'
+        self.role.rolename = 'admino'
         self.assertFalse(self.user.isAdmin())
 
     def test_role_returns_truthy(self):

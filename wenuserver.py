@@ -14,6 +14,8 @@ def build_parser():
     mode.add_argument('--set-admin', action='store_true')
     parser.add_argument('-d', '--debug', action='store_true')
     parser.add_argument('--disable-auth', action='store_true')
+    parser.add_argument('-a', '--addr', default='127.0.0.1')
+    parser.add_argument('-p', '--port', type=int, default=8080)
     return parser
 
 
@@ -27,7 +29,7 @@ def main(args, session=None):
         passwd = getpass.getpass('Password:')
         User.set_admin(passwd, session=session)
     elif args.serve:
-        app.run(host='0.0.0.0',port=8080,debug=args.debug)
+        app.run(host=args.addr, port=args.port, debug=args.debug)
 
 if __name__ == '__main__':
     parser = build_parser()

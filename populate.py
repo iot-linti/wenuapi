@@ -3,7 +3,8 @@ import random
 import string
 from wenuapi.models.role import Role
 
-server = wenuclient.Client('http://localhost:8080')
+url = 'http://localhost:8080'
+client = wenuclient.Client(url)
 
 motes = [{
     'level_id': i,
@@ -18,7 +19,7 @@ motes = [{
 
 
 for mote in motes:
-    moteobj = server.Mote(**mote)
+    moteobj = client.Mote(**mote)
     moteobj.create()
 
 levels = [{
@@ -26,16 +27,16 @@ levels = [{
 } for i in range(5)]
 
 for level in levels:
-    levelobj = server.Level(**level)
+    levelobj = client.Level(**level)
     levelobj.create()
 
-roleResponse = server.Role(rolename = 'admin').create()
-server.Role(rolename='user').create()
-userResponse = server.User(username='admin', password= "1234").create()
+roleResponse = client.Role(rolename = 'admin').create()
+client.Role(rolename='user').create()
+userResponse = client.User(username='admin', password= "1234").create()
 
-server.Roletable(user_id = userResponse.get('_id'),role_id = roleResponse.get('_id')).create()
+client.Roletable(user_id = userResponse.get('_id'),role_id = roleResponse.get('_id')).create()
 
-server.Action(mote_id=1, command='turn_off', arguments='').create()
-server.Action(mote_id=2, command='turn_off', arguments='').create()
-server.Action(mote_id=3, command='turn_off', arguments='').create()
-server.Action(mote_id=4, command='turn_off', arguments='').create()
+client.Action(mote_id=1, command='turn_off', arguments='').create()
+client.Action(mote_id=2, command='turn_off', arguments='').create()
+client.Action(mote_id=3, command='turn_off', arguments='').create()
+client.Action(mote_id=4, command='turn_off', arguments='').create()
