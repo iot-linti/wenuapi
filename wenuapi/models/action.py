@@ -12,5 +12,5 @@ class Action(CommonColumns):
     mote_id = Column(Integer)
     command = Column(String(80))
     arguments = Column(String(80))
-    viewed = Column(Boolean,default=False)
+    viewed = Column(Boolean,default=False) #True si una accion ya ha sido atendida.
 

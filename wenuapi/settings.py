@@ -15,7 +15,6 @@ influxdb_host = 'influxdb.linti.unlp.edu.ar'
 influxdb_port = '8086'
 influxdb_db = 'uso_racional'
 #database_uri = 'sqlite://'
-#database_uri = 'mysql://{}:{}@localhost/wenuapi2'.format(
 database_uri = 'mysql://{}:{}@localhost/wenuapi'.format(
     database_username,
     database_password,
@@ -39,14 +38,14 @@ role = Role._eve_schema['role']
 roleTable = RoleTable._eve_schema['roletable']
 
 action.update({
-    #'allowed_read_roles' : ['admino'],
-    #'allowed_item_read_roles' : ['admi'],
     'allowed_roles': ['admin', 'user'],
     'allowed_item_roles': ['admin','user'],
     'resource_methods' : ['POST','GET'],
     'item_methods' : ['GET','DELETE','PUT'],
     })
 
+
+#data_relation permite devolver los roles de cada usuario
 user.update({
     'allowed_roles': ['admin'],
     'allowed_item_roles': ['admin'],
@@ -65,6 +64,7 @@ role.update({
     'item_methods': ['GET','DELETE','PUT'],
     })
 
+#Contiene las relaciones entre Users y Roles.
 roleTable.update({
     'allowed_roles': ['admin'],
     'allowed_item_roles': ['admin'],
@@ -90,10 +90,8 @@ DOMAIN = {
 
 SETTINGS = {
     'DOMAIN':DOMAIN,
-    'IF_MATCH' : False,
+    'IF_MATCH' : True,
     'DEBUG': True,
-    #'PUBLIC_METHODS': ['GET', 'POST'],
-    #'PUBLIC_ITEM_METHODS': ['GET', 'PATCH'],
     'RESOURCE_METHODS': ['GET', 'POST'],
     'ITEM_METHODS' : ['GET', 'PATCH', 'PUT', 'DELETE'],
     'SQLALCHEMY_DATABASE_URI': database_uri,
@@ -103,8 +101,7 @@ SETTINGS = {
     #'SERVER_NAME' : 'Wenuapi2',
     }
 
+
+#Oculta la password y el token de los usuarios al hacer GET de user.
 SETTINGS['DOMAIN']['user']['datasource']['projection']['password'] = 0
 SETTINGS['DOMAIN']['user']['datasource']['projection']['token'] = 0
-#SETTINGS['DOMAIN']['user']['authentication'] = auth.MyBasicAuth
-#SETTINGS['DOMAIN']['role']['authentication'] = auth.MyBasicAuth
-#SETTINGS['DOMAIN']['roletable']['authentication'] = auth.MyBasicAuth

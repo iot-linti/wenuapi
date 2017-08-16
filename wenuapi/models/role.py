@@ -15,6 +15,10 @@ class Role(CommonColumns):
 
     @classmethod
     def set_Role(cls, rolename, session=None):
+        '''
+        Se utiliza para verificar que un rol exista como tambien para
+        agregar un nuevo rol
+        '''
         if session is None:
             session = app.data.driver.session
 

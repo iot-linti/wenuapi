@@ -1,5 +1,5 @@
 import json
-from wenuapi2.wenuclient import Client,get_session,register_user
+from wenuclient import Client,get_session,register_user
 import requests
 
 url = 'http://localhost:8080'
@@ -22,16 +22,18 @@ else:
         "mote_id" : "linti_cocina",
         "temperature" : ">24.19",
     }
-    parametersString = 'page=2\
-&sort=-time\
-&max_results=10'
+    parameters = {
+        "page" : 1,
+        "sort" : "-time",
+        "max_results" : 40,
+    }
 
+    parametersString = '&'.join('{}={}'.format(key, value) for key, value in parameters.items())
 
     measurements = server.Measurement.where(parametersString,**arg)
     print "-------- "
     for measure in measurements:
-        print 'Mote id: {}'.format(measure.__getattr__('mote_id'))
-        print 'Temperature: {}'.format(measure.__getattr__('temperature'))
-        print 'Date: {}'.format(measure.__getattr__('_created'))
+        print 'Mote id: {}'.format(measure.mote_id)
+        print 'Temperature: {}'.format(measure.temperature)
+        print 'Date: {}'.format(measure._created)
         print "--------"
-

@@ -1,8 +1,10 @@
+# coding=utf-8
 from .common import CommonColumns
 from flask import current_app as app
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import PasswordType
+from ..secrets import SECRET_KEY
 from sqlalchemy import (
     Column,
     String,
@@ -11,16 +13,11 @@ from sqlalchemy import (
 )
 import random,string
 
-
 from itsdangerous import TimedJSONWebSignatureSerializer \
     as Serializer
 from itsdangerous import SignatureExpired, BadSignature
 
-SECRET_KEY = 'this-is-my-super-secret-key'
 default_expiration=24*60*60
-
-def randomToken():
-    return (''.join(random.choice(string.ascii_uppercase)for x in range(10)))
 
 class User(CommonColumns):
     __tablename__ = 'user'
@@ -32,7 +29,8 @@ class User(CommonColumns):
     roles = relationship('Role', secondary= 'roletable',backref='users')
 
     def isAdmin(self):
-        """Checks if user is admin.
+        """
+        Checks if user is admin.
         """
         admin = ['admin']
         list = []
@@ -43,11 +41,13 @@ class User(CommonColumns):
         return cant > 0
 
     def isAuthorized(self, role_names):
-        """Checks if user is related to given role_names.
+        """
+        Checks if user is related to given role_names.
         """
         list = []
         for rol in self.roles:
             list.append(rol.rolename)
+        #Obtiene el numero de coincidencias
         cant = len(set(list).intersection(role_names))
 
         return cant > 0
@@ -56,11 +56,9 @@ class User(CommonColumns):
     def generate_token(username,expiration=None):
         if expiration is None:
             expiration = default_expiration
-        #print expiration
         s = Serializer(SECRET_KEY,expires_in=expiration)
         token = s.dumps({'login': username})
         return token
-
 
     @staticmethod
     def validate_token(token):
@@ -77,7 +75,10 @@ class User(CommonColumns):
 
     @classmethod
     def token_login(cls, token, resource= None, method=None,allowed_roles = None ,session = None):
-
+        '''
+        Autentificacion por token, se debe usar para todos los endpoints correspondientes
+        a Eve e influx.
+        '''
         if session is None:
             session = app.data.driver.session
 
@@ -94,23 +95,29 @@ class User(CommonColumns):
 
     @classmethod
     def reset_token(cls, token, resource, method,allowed_roles = None ,session = None):
+        '''
+        Permite renovar el token si no ha expirado.
+        '''
 
-            if session is None:
-                session = app.data.driver.session
+        if session is None:
+            session = app.data.driver.session
 
-            user = User.token_login(token,resource,method,session=session)
+        user = User.token_login(token,resource,method,session=session)
 
-            if user:
-                username = user.username
-                new_token = User.generate_token(username)
-                session.query(User).filter(User.username == username).update({'token':new_token})
-                session.commit()
+        if user:
+            username = user.username
+            new_token = User.generate_token(username)
+            session.query(User).filter(User.username == username).update({'token':new_token})
+            session.commit()
 
-            return user
+        return user
 
     @classmethod
     def login(cls, username, password, session=None):
-
+        '''
+        Autentificacion por usuario y contraseña. Solo se utiliza para obtener el token del usuario.
+        Unicamente el endpoint login la necesita.
+        '''
         if session is None:
             session = app.data.driver.session
         try:
@@ -142,5 +149,3 @@ class User(CommonColumns):
                 session.add(user)
                 session.commit()
         return user
-
-

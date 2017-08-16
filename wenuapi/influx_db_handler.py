@@ -6,6 +6,8 @@ from collections import OrderedDict
 import string
 import re
 
+#Se utiliza para mantener la coherencia de las consultas con respecto
+#a los demas endpoints.
 translator = {
             'mote_id': 'mota_id',
             'current': 'corriente',
@@ -32,6 +34,10 @@ def make_query(query,client):
     return measurements
 
 def reParser(string):
+    '''
+    Parsea el string que recibe como parametro y genera una lista
+    con un operador y un argumento
+    '''
     array = ['=']
     operators = ['<','>','<>','<=','>=']
     objects = re.findall(r"[><=]", string)
@@ -42,20 +48,30 @@ def reParser(string):
             value = string.partition(operator)
             string = value[2]
             array[0] = operator
+    #Si el argumento no es un numero se le agregan comillas simples
     if not string.replace('.','',1).isdigit():
         string = "'" + string +"'"
     array.append(string)
     return array
 
 def flask_to_influxdb_query(args, translator=translator):
+    '''
+    Devuelve un string con la consulta generada a partir
+    de los parametros recibidos.
+    Translator se usa si de debe utilizar otro traductor,
+    como es en el caso de los test de unidad.
+    '''
     query = ""
     query_args = []
     where = args.get('where')
     order=offset=None
     limit = 40
 
+    #Comprueba los parametros recibidos
     if args.get('sort') is not None:
         order = args.get('sort')
+        #Si el primer caracter es '-', el orden sera
+        #descendente.
         if order[0] == '-':
             order_type = "DESC"
             order = order[1:]
@@ -66,6 +82,7 @@ def flask_to_influxdb_query(args, translator=translator):
     if args.get('page') is not None:
         offset = (int(args.get('page')) - 1) * limit
 
+    #Genera la consulta a partir del where
     if where is not None:
         where_args = json.loads(where, object_pairs_hook=OrderedDict)
         where_condition = []
@@ -97,9 +114,7 @@ class InfluxDBHandler(object):
     @requires_auth
     def list(self):
         query_filter = flask_to_influxdb_query(request.args)
-        #print query_filter
         query = "SELECT * FROM medicion {} ".format(query_filter)
-        #query = "SELECT * FROM medicion WHERE mota_id = 'linti_cocina' ORDER BY mota_id DESC LIMIT 50"
-        print query
+        #print query
         measurements = make_query(query,self.influx)
         return json.dumps({'_items': measurements})

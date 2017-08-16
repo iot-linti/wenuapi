@@ -1,3 +1,4 @@
+# coding=utf-8
 from functools import wraps
 import json
 import base64
@@ -12,7 +13,11 @@ def log_user(app):
 
     @app.route('/login', methods=['GET'])
     def log():
-
+        '''
+        Endpoint fuera de Eve. Se utiliza para loguearse por
+        medio de usuario y contraseña. Se actualiza el token y se lo retorna
+        '''
+        
         auth = request.authorization
         username = auth.username
         password = auth.password
@@ -28,7 +33,11 @@ def log_user(app):
 
     @app.route('/refreshtoken', methods=['GET'])
     def token():
-
+        '''
+        Se utiliza para renovar el token de un usuario, sin necedidad de
+        enviar el usuario y contraseña
+        '''
+        
         method = request.method
         resource = request.path
         auth = request.authorization
