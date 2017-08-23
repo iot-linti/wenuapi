@@ -1,0 +1,12 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+
+[packages]
+SQLAlchemy = "*"
+SQLAlchemy-Utils = "*"
+Eve-SQLAlchemy = "*"
+passlib = "*"
+influxdb = "*"
+gunicorn = "*"
+pep8 = "*"

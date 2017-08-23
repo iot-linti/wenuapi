@@ -1,0 +1,125 @@
+{
+    "default": {
+        "Flask_SQLAlchemy": {
+            "version": "==2.2",
+            "hash": "sha256:fa3bd6343de231b2b3376a276df6d331c63c766449b660fc04d375a1c21312ac"
+        },
+        "SQLAlchemy": {
+            "version": "==1.1.13",
+            "hash": "sha256:2a98ac87b30eaa2bee1f1044848b9590e476e7f93d033c6542e60b993a5cf898"
+        },
+        "Eve-SQLAlchemy": {
+            "version": "==0.4.1",
+            "hash": "sha256:fc86578f0593dbbc12ae064345efb531a0ebc8b784db42e8813f57c7cbf8cb05"
+        },
+        "gunicorn": {
+            "version": "==19.7.1",
+            "hash": "sha256:75af03c99389535f218cc596c7de74df4763803f7b63eb09d77e92b3956b36c6"
+        },
+        "simplejson": {
+            "version": "==3.11.1",
+            "hash": "sha256:01a22d49ddd9a168b136f26cac87d9a335660ce07aa5c630b8e3607d6f4325e7"
+        },
+        "Flask": {
+            "version": "==0.10.1",
+            "hash": "sha256:4c83829ff83d408b5e1d4995472265411d2c414112298f2eb4b359d9e4563373"
+        },
+        "urllib3": {
+            "version": "==1.22",
+            "hash": "sha256:06330f386d6e4b195fbfc736b297f58c5a892e4440e54d294d7004e3a9bbea1b"
+        },
+        "Eve": {
+            "version": "==0.5.3",
+            "hash": "sha256:623e89bc551eee0fa4b2325ec17eef2cf13d019475befb8a425d62f1117619fb"
+        },
+        "influxdb": {
+            "version": "==4.1.1",
+            "hash": "sha256:f3a42266705544f4bda721ac293aa1f1e76a5140dd9fda55cdd1b2b6678cd7f4"
+        },
+        "Jinja2": {
+            "version": "==2.9.6",
+            "hash": "sha256:2231bace0dfd8d2bf1e5d7e41239c06c9e0ded46e70cc1094a0aa64b0afeb054"
+        },
+        "MarkupSafe": {
+            "version": "==0.23",
+            "hash": "sha256:a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3"
+        },
+        "pytz": {
+            "version": "==2017.2",
+            "hash": "sha256:d1d6729c85acea5423671382868627129432fba9a89ecbb248d8d1c7a9f01c67"
+        },
+        "Werkzeug": {
+            "version": "==0.10.4",
+            "hash": "sha256:a438aa8c3f513a5cf3dda02a62f9e022b7598e9fbfeba14ba2d6dd957c8ab436"
+        },
+        "Cerberus": {
+            "version": "==0.8.1",
+            "hash": "sha256:0532a5ca3b3559ff05c984363749dc8d48d734c8e70cbca3f3c33f19c0a007d0"
+        },
+        "SQLAlchemy-Utils": {
+            "version": "==0.32.14",
+            "hash": "sha256:e74b0338f4d56dcb0cb57f1b4f5afee5b2ffe595dd5a68b62da66ea4a7399cce"
+        },
+        "python_dateutil": {
+            "version": "==2.6.1",
+            "hash": "sha256:95511bae634d69bc7329ba55e646499a842bc4ec342ad54a8cdb65645a0aad3c"
+        },
+        "Flask-PyMongo": {
+            "version": "==0.3.1",
+            "hash": "sha256:cdafad93af22336b8993d9f9921f00d0b9d4367eb83fe496f25e66b99fc5050c"
+        },
+        "passlib": {
+            "version": "==1.7.1",
+            "hash": "sha256:43526aea08fa32c6b6dbbbe9963c4c767285b78147b7437597f992812f69d280"
+        },
+        "pymongo": {
+            "version": "==2.9.5",
+            "hash": "sha256:912516ac6a355d7624374a38337b8587afe3eb535c0a5456b3bd12df637a6e70"
+        },
+        "six": {
+            "version": "==1.10.0",
+            "hash": "sha256:0ff78c403d9bccf5a425a6d31a12aa6b47f1c21ca4dc2573a7e2f32a97335eb1"
+        },
+        "Events": {
+            "version": "==0.2.2",
+            "hash": "sha256:1d09f09d5ab496815e9bfd2194546d75fd54b8e76703f4fd83314080de94b86d"
+        },
+        "pep8": {
+            "version": "==1.7.0",
+            "hash": "sha256:4fc2e478addcf17016657dff30b2d8d611e8341fac19ccf2768802f6635d7b8a"
+        },
+        "chardet": {
+            "version": "==3.0.4",
+            "hash": "sha256:fc323ffcaeaed0e0a02bf4d117757b98aed530d9ed4531e3e15460124c106691"
+        },
+        "requests": {
+            "version": "==2.18.4",
+            "hash": "sha256:6a1b267aa90cac58ac3a765d067950e7dbbf75b1da07e895d1f594193a40a38b"
+        },
+        "itsdangerous": {
+            "version": "==0.24",
+            "hash": "sha256:cbb3fcf8d3e33df861709ecaf89d9e6629cff0a217bc2848f1b41cd30d360519"
+        },
+        "certifi": {
+            "version": "==2017.7.27.1",
+            "hash": "sha256:54a07c09c586b0e4c619f02a5e94e36619da8e2b053e20f594348c0611803704"
+        },
+        "idna": {
+            "version": "==2.6",
+            "hash": "sha256:8c7309c718f94b3a625cb648ace320157ad16ff131ae0af362c9f21b80ef6ec4"
+        }
+    },
+    "develop": {},
+    "_meta": {
+        "sources": [
+            {
+                "url": "https://pypi.python.org/simple",
+                "verify_ssl": true
+            }
+        ],
+        "requires": {},
+        "hash": {
+            "sha256": "c8b44c80fc223981a374e978468be5fa0895019ffa3f1186fd46a73007b079b3"
+        }
+    }
+}
