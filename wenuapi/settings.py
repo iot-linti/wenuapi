@@ -1,3 +1,4 @@
+import urllib
 from eve_sqlalchemy.decorators import registerSchema
 from models.action import Action
 from models.user import User
@@ -8,15 +9,25 @@ from models.measurement import Measurement
 from models.mote import Mote
 from secrets import database_username, database_password
 from secrets import influxdb_username, influxdb_password
+from secrets import rabbitmq_username, rabbitmq_password
 
+rabbitmq_hostname = 'mosquitto'
+rabbitmq_vhost = 'wenuapi'
+
+rabbitmq_url = 'amqp://{}:{}@{}:5672/{}'.format(
+    rabbitmq_username,
+    urllib.quote(rabbitmq_password),
+    rabbitmq_hostname,
+    rabbitmq_vhost,
+)
 
 use_influxdb = True
 influxdb_host = 'influxdb.linti.unlp.edu.ar'
 influxdb_port = '8086'
 influxdb_db = 'uso_racional'
 #database_uri = 'sqlite://'
-#database_uri = 'mysql://{}:{}@localhost/wenuapi2'.format(
-database_uri = 'mysql://{}:{}@localhost/wenuapi'.format(
+#database_uri = 'mysql://{}:{}@localhost/wenuapi'.format(
+database_uri = 'mysql://{}:{}@localhost/wenuapi2'.format(
     database_username,
     database_password,
 )
