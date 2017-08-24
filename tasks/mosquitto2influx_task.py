@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
-import celery
 import json
 import paho.mqtt.client as mqtt
 import logging
 import logging.handlers
 from influxdb import InfluxDBClient
 
-app = celery.current_app
-
-server = 'localhost'
+server = '163.10.10.118'
 port = 1883
 DELAY = 60
 
@@ -46,8 +43,7 @@ def to_influxdb(influxclient, logger):
     return handler
 
 
-@app.task
-def mqtt2influxdb():
+def run():
     logging.basicConfig(
         level=logging.DEBUG,
         format='[%(levelname)s] (mqtt2influxdb) %(message)s',
