@@ -1,10 +1,12 @@
+import logging
+
 from eve_sqlalchemy.decorators import registerSchema
 from .models.action import Action
 from .models.user import User
 from .models.role import Role
 from .models.roletable import RoleTable
 from .models.level import Level
-from .models.camera import Camera
+from .models.camera import Camera, BasicIPCamera
 from .models.measurement import Measurement
 from .models.mote import Mote
 from secrets import database_username, database_password
@@ -15,7 +17,7 @@ use_influxdb = True
 influxdb_host = 'influxdb.linti.unlp.edu.ar'
 influxdb_port = '8086'
 influxdb_db = 'uso_racional'
-#database_uri = 'sqlite://'
+# database_uri = 'sqlite://'
 database_uri = 'mysql://{}:{}@localhost/wenuapi'.format(
     database_username,
     database_password,
@@ -31,6 +33,7 @@ registerSchema(Mote.__tablename__)(Mote)
 registerSchema(Role.__tablename__)(Role)
 registerSchema(RoleTable.__tablename__)(RoleTable)
 registerSchema(Camera.__tablename__)(Camera)
+registerSchema(BasicIPCamera.__tablename__)(BasicIPCamera)
 
 action = Action._eve_schema['action']
 user = User._eve_schema['user']
@@ -39,6 +42,7 @@ mote = Mote._eve_schema['mote']
 role = Role._eve_schema['role']
 roleTable = RoleTable._eve_schema['roletable']
 camera = Camera._eve_schema['camera']
+basicIPCamera = BasicIPCamera._eve_schema['camera']
 
 
 action.update({
@@ -93,10 +97,11 @@ DOMAIN = {
     'role': role,
     'roletable': roleTable,
     'camera': camera,
+    'basicIPCamera': basicIPCamera,
 }
 
 SETTINGS = {
-    'DOMAIN':DOMAIN,
+    'DOMAIN': DOMAIN,
     'IF_MATCH' : True,
     'DEBUG': True,
     'RESOURCE_METHODS': ['GET', 'POST'],
@@ -112,3 +117,8 @@ SETTINGS = {
 #Oculta la password y el token de los usuarios al hacer GET de user.
 SETTINGS['DOMAIN']['user']['datasource']['projection']['password'] = 0
 SETTINGS['DOMAIN']['user']['datasource']['projection']['token'] = 0
+
+try:
+    from local_settings import *
+except ImportError:
+    logging.warning("No local settings found")
