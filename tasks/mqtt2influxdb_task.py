@@ -1,20 +1,10 @@
 # -*- coding: utf-8 -*-
+from influxdb import InfluxDBClient
+from .mqtt2influxdb_cfg import *
 import json
-import paho.mqtt.client as mqtt
 import logging
 import logging.handlers
-from influxdb import InfluxDBClient
-
-server = '163.10.10.118'
-port = 1883
-DELAY = 60
-
-influx_user = ***REMOVED***
-influx_password = '***REMOVED***'
-influx_dbname = 'uso_racional'
-influx_host = 'influxdb.linti.unlp.edu.ar'
-influx_port = 8086
-influx_measurement = 'medicion'
+import paho.mqtt.client as mqtt
 
 def to_influxdb(influxclient, logger):
     def handler(client, userdata, msg):
@@ -27,7 +17,7 @@ def to_influxdb(influxclient, logger):
             return
 
         data_points = [{
-            'measurement': influx_measurement,
+            'measurement': influxdb_measurement,
             'tags': {'mota_id': msg['mote_id']},
             'fields': {
                 'temperatura': float(msg['temperature']),
@@ -53,16 +43,16 @@ def run():
 
 
     influxclient = InfluxDBClient(
-        influx_host,
-        influx_port,
-        influx_user,
-        influx_password,
-        influx_dbname,
+        influxdb_host,
+        influxdb_port,
+        influxdb_user,
+        influxdb_password,
+        influxdb_dbname,
     )
-    client = mqtt.Client(client_id='mqtt2influxdb')
+    client = mqtt.Client(client_id=mqtt_client_id)
     client.on_message = to_influxdb(influxclient, logger)
-    client.connect(server, port)
-    client.subscribe('linti/ipv6/temp')
+    client.connect(mqtt_server, mqtt_port)
+    client.subscribe(mqtt_topic)
     client.loop_forever(timeout=1.0)
 
 if __name__ == '__main__':
