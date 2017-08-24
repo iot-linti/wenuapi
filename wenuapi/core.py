@@ -1,6 +1,7 @@
 from .auth import token_auth
 from . import settings
 from .influx_db_handler import InfluxDBHandler
+from .camera_app import init_camera_app
 from .models.common import Base
 from eve import Eve
 from eve_sqlalchemy import SQL
@@ -27,7 +28,7 @@ def build_app(disable_auth=False):
     db.Model = Base
     db.create_all()
 
-
+    init_camera_app(app=app)
 
     if settings.use_influxdb:
         # Register influx for /measurements
@@ -40,6 +41,8 @@ def build_app(disable_auth=False):
             app,
         )
     else:
+        from eve_sqlalchemy.decorators import registerSchema
+        from .models.measurement import Measurement
         registerSchema(Measurement.__tablename__)(Measurement)
         settings.SETTINGS['DOMAIN']['measurement'] = Measurement._eve_schema['measurement']
 
