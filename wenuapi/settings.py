@@ -10,17 +10,6 @@ from .models.measurement import Measurement
 from .models.mote import Mote
 from secrets import database_username, database_password
 from secrets import influxdb_username, influxdb_password
-from secrets import rabbitmq_username, rabbitmq_password
-
-rabbitmq_hostname = 'mosquitto'
-rabbitmq_vhost = 'wenuapi'
-
-rabbitmq_url = 'amqp://{}:{}@{}:5672/{}'.format(
-    rabbitmq_username,
-    urllib.quote(rabbitmq_password),
-    rabbitmq_hostname,
-    rabbitmq_vhost,
-)
 
 use_influxdb = True
 influxdb_host = 'influxdb.linti.unlp.edu.ar'

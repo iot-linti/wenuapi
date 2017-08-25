@@ -45,7 +45,7 @@ def run():
     influxclient = InfluxDBClient(
         influxdb_host,
         influxdb_port,
-        influxdb_user,
+        influxdb_username,
         influxdb_password,
         influxdb_dbname,
     )

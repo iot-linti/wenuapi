@@ -19,7 +19,7 @@ def load_task_modules(path, package, endswith='_task.py'):
 
 def setup_tasks(queue, task_modules):
     for module in task_modules:
-        queue.enqueue(module.run)
+        queue.enqueue(module.run, timeout=-1)
 
 
 if __name__ == '__main__':

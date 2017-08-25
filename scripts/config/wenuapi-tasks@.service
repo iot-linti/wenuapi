@@ -1,0 +1,9 @@
+[Unit]
+Description="WenuAPI Task Workers"
+After="network.target"
+Requires="redis.service"
+
+
+[Service]
+Type=simple
+ExecStart=@PROJECT_PATH@/.venv/bin/rqworker --path @PROJECT_PATH@

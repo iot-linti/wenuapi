@@ -47,7 +47,7 @@ def run():
                 previous_check = captured_date
 
                 msj = json.dumps({
-                    'mote_id': mqtt_client_id,
+                    'mote_id': mqtt_sensor_id,
                     'temperature': float(weather['temperature']),
                     'current': 0,
                     'movement': 0,
