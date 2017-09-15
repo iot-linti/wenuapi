@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+<table>
+  <tr>
+    <th>Level id</th>
+	<th>Mote id</th>
+	<th>Resolution</th>
+	<th>X</th>
+	<th>Y</th>
+  </tr>
+	{% for mote in all_mote %}
+	  <tr>
+	    <td>{{mote.level_id}}</td>
+		<td>{{mote.mote_id}}</td>
+		<td>{{mote.resolution}}</td>
+		<td>{{mote.x}}</td>
+		<td>{{mote.y}}</td>
+	  </tr>
+	{% endfor %}
+{% endblock %}

@@ -16,7 +16,7 @@ influxdb_host = 'influxdb.linti.unlp.edu.ar'
 influxdb_port = '8086'
 influxdb_db = 'uso_racional'
 #database_uri = 'sqlite://'
-database_uri = 'mysql://{}:{}@localhost/wenuapi'.format(
+database_uri = 'mysql://{}:{}@localhost/db_name'.format(
     database_username,
     database_password,
 )
