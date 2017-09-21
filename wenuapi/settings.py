@@ -1,12 +1,13 @@
-from eve_sqlalchemy.decorators import registerSchema
 from .models.action import Action
-from .models.user import User
-from .models.role import Role
-from .models.roletable import RoleTable
-from .models.level import Level
+from .models.alert import Alert
 from .models.camera import Camera
+from .models.level import Level
 from .models.measurement import Measurement
 from .models.mote import Mote
+from .models.role import Role
+from .models.roletable import RoleTable
+from .models.user import User
+from eve_sqlalchemy.decorators import registerSchema
 from secrets import database_username, database_password
 from secrets import influxdb_username, influxdb_password
 
@@ -31,6 +32,7 @@ registerSchema(Mote.__tablename__)(Mote)
 registerSchema(Role.__tablename__)(Role)
 registerSchema(RoleTable.__tablename__)(RoleTable)
 registerSchema(Camera.__tablename__)(Camera)
+registerSchema(Alert.__tablename__)(Alert)
 
 action = Action._eve_schema['action']
 user = User._eve_schema['user']
@@ -39,6 +41,7 @@ mote = Mote._eve_schema['mote']
 role = Role._eve_schema['role']
 roleTable = RoleTable._eve_schema['roletable']
 camera = Camera._eve_schema['camera']
+alert = Alert._eve_schema['alert']
 
 
 action.update({
@@ -48,6 +51,12 @@ action.update({
     'item_methods': ['GET', 'DELETE', 'PUT'],
 })
 
+alert.update({
+    'allowed_roles': ['admin', 'user'],
+    'allowed_item_roles': ['admin', 'user'],
+    'resource_methods': ['POST', 'GET'],
+    'item_methods': ['GET', 'DELETE', 'PUT'],
+})
 
 #data_relation permite devolver los roles de cada usuario
 user.update({
@@ -93,6 +102,7 @@ DOMAIN = {
     'role': role,
     'roletable': roleTable,
     'camera': camera,
+    'alert': alert,
 }
 
 SETTINGS = {
