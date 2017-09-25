@@ -1,5 +1,5 @@
 from common_cfg import *
-from ..wenuapi.secrets import influxdb_username, influxdb_password
+from wenuapi.secrets import influxdb_username, influxdb_password
 import random
 
 influxdb_dbname = 'uso_racional'
