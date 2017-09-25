@@ -17,10 +17,13 @@ def log_user(app):
         Endpoint fuera de Eve. Se utiliza para loguearse por
         medio de usuario y contraseña. Se actualiza el token y se lo retorna
         '''
-        
-        auth = request.authorization
-        username = auth.username
-        password = auth.password
+
+        if auth is not None:
+            auth = request.authorization
+            username = auth.username
+            password = auth.password
+        else:
+            username = password = False
 
         if(not username or not password):
             abort(401, description='Please provide an username and/or password.')
