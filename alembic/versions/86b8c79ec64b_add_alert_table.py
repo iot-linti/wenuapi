@@ -20,10 +20,10 @@ def upgrade():
         'alert',
         sa.Column('_created', sa.DateTime),
         sa.Column('_updated', sa.DateTime),
-        sa.Column('_etag', sa.VarChar(40)),
+        sa.Column('_etag', sa.VARCHAR(40)),
         sa.Column('_id', sa.Integer, primary_key=True, autoincrement=True),
-        sa.Column('mote_id', sa.Integer, sa.ForeignKey('mote_id')),
-        sa.Column('measurement_id', sa.Integer, sa.ForeignKey('measurement_id')),
+        sa.Column('mote_id', sa.Integer, sa.ForeignKey('mote._id')),
+        sa.Column('measurement_id', sa.Integer, sa.ForeignKey('measurement._id')),
         sa.Column('time', sa.DateTime),
         sa.Column('solved', sa.Boolean),
     )
