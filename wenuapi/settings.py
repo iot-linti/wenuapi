@@ -11,7 +11,6 @@ from eve_sqlalchemy.decorators import registerSchema
 from secrets import database_username, database_password
 from secrets import influxdb_username, influxdb_password
 
-
 use_influxdb = True
 influxdb_host = 'influxdb.linti.unlp.edu.ar'
 influxdb_port = '8086'

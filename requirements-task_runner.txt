@@ -1,0 +1,12 @@
+rq
+rq-dashboard
+
+# mqtt2influxdb y meteo2mqtt
+paho-mqtt
+
+# mqtt2influxdb
+influxdb
+
+# meteo2mqtt
+iso8601
+requests

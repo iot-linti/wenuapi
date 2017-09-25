@@ -1,0 +1,13 @@
+[Unit]
+Description="WenuAPI application server"
+After="network.target"
+Requires="wenuapi-tasks.service"
+
+
+[Service]
+Type=simple
+ExecStart=@PROJECT_PATH@/.venv/bin/gunicorn --chdir "@PROJECT_PATH@" -b 127.0.0.1:5000 wenuserver:app --log-file - --log-level debug
+
+[Install]
+WantedBy="multi-user.target"
+WantedBy="nginx.service"
