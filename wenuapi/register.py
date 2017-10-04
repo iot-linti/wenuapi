@@ -51,4 +51,31 @@ def log_user(app):
                 return json.dumps({'token': user.token})
 
             abort(401,'Wrong token')
+            
+    def random_qr(text):
+        qr = qrcode.QRCode(version=1,
+                       error_correction=qrcode.constants.ERROR_CORRECT_L,
+                       box_size=10,
+                       border=4)
+        qr.add_data(text)
+        qr.make(fit=True)
+        img = qr.make_image()
+        return img
 
+    @app.route('/qrlog', methods=['GET'])
+    def get_qrimg():
+        server = 'http://163.10.10.118/wenuapi/login'
+            try:
+                session = wenuclient.get_session(server, 'admin',***REMOVED***)
+                #~ client = wenuclient.Client(server, session)
+            except Exception as e:
+                print e
+                print("Error de conexión.")
+        else:
+            print "asdasd"
+            img_buf = cStringIO.StringIO()
+            img = random_qr(text=session.auth[0]+'\n'+'http://163.10.10.118/wenuapi')
+            img.save(img_buf)
+            img_buf.seek(0)
+            return flask.send_file(img_buf, mimetype='image/png')
+        return 'Error'
