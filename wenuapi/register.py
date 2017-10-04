@@ -6,7 +6,8 @@ from models.user import User
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy_utils import PasswordType
 from flask import request, jsonify, redirect, url_for,abort
-
+import qrcode
+import cStringIO
 
 
 def log_user(app):
