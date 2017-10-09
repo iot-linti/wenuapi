@@ -73,9 +73,8 @@ def log_user(app):
                 print e
                 print("Error de conexión.")
         else:
-            print "asdasd"
             img_buf = cStringIO.StringIO()
-            img = random_qr(text=session.auth[0]+'\n'+'http://163.10.10.118/wenuapi')
+            img = random_qr(text=session.auth[0])#+'\n'+'http://163.10.10.118/wenuapi')
             img.save(img_buf)
             img_buf.seek(0)
             return flask.send_file(img_buf, mimetype='image/png')
