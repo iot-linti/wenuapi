@@ -18,8 +18,8 @@ def log_user(app):
         medio de usuario y contraseña. Se actualiza el token y se lo retorna
         '''
 
+        auth = request.authorization
         if auth is not None:
-            auth = request.authorization
             username = auth.username
             password = auth.password
         else:
