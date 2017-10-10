@@ -1,10 +1,10 @@
 # coding=utf-8
+from secrets import SECRET_KEY
 from .common import CommonColumns
 from flask import current_app as app
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import PasswordType
-from ..secrets import SECRET_KEY
 from sqlalchemy import (
     Column,
     String,
