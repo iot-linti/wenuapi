@@ -58,6 +58,13 @@ action.update({
     'item_methods': ['GET', 'DELETE', 'PUT'],
 })
 
+mote.update({
+    'allowed_roles': ['admin', 'user'],
+    'allowed_item_roles': ['admin', 'user'],
+    'resource_methods': ['POST', 'GET'],
+    'item_methods': ['GET', 'DELETE', 'PUT'],
+})
+
 alert.update({
     'allowed_roles': ['admin', 'user'],
     'allowed_item_roles': ['admin', 'user'],
@@ -114,8 +121,8 @@ DOMAIN = {
 }
 
 SETTINGS = {
-    'DOMAIN': DOMAIN,
-    'IF_MATCH' : True,
+    'DOMAIN':DOMAIN,
+    'IF_MATCH' : False, # FIXME
     'DEBUG': True,
     'RESOURCE_METHODS': ['GET', 'POST'],
     'ITEM_METHODS': ['GET', 'PATCH', 'PUT', 'DELETE'],

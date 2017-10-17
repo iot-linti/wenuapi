@@ -1,5 +1,5 @@
 # coding=utf-8
-from secrets import SECRET_KEY
+from ..secrets import SECRET_KEY
 from .common import CommonColumns
 from flask import current_app as app
 from sqlalchemy.orm.exc import NoResultFound
@@ -49,7 +49,7 @@ class User(CommonColumns):
             list.append(rol.rolename)
         #Obtiene el numero de coincidencias
         cant = len(set(list).intersection(role_names))
-
+        
         return cant > 0
 
     @staticmethod

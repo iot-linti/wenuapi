@@ -11,22 +11,23 @@ import time
 def run():
     valores = struct.pack("BBB",1,1,1)
     server = "http://163.10.10.118/wenuapi"
-    user = ***REMOVED***
-    password = ***REMOVED***
+    user = "lihuen"
+    password = "lihuen"
     session = wenuclient.get_session(
                             '/'.join((server, 'login')),
                             user,
                             password,
                         )
     client = wenuclient.Client(server, session)
-    lista = client.Action.where(viewed = False)
-    for each in lista:
-        print("hay entrada")
-        for cada in range(3):
-            mqttpublish.single("motaID/accion", payload =valores,hostname=mqtt_server, port=mqtt_port)
-            time.sleep(0.2)
-        each.viewed = True
-        each.save()
-    
+    while True:
+        lista = client.Action.where(viewed = False)
+        for each in lista:
+            print("hay entrada")
+            for cada in range(3):
+                mqttpublish.single("motaID/accion", payload =valores,hostname=mqtt_server, port=mqtt_port)
+                time.sleep(0.2)
+            each.viewed = True
+            each.save()
+        time.sleep(2)
 if __name__ == '__main__':
     run()
