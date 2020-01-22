@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+'''Main script and WSGI module to run the server.bin
+Normally this module may be loaded from a WSGI server.import
+In maintainance mode it can be used as a script to cleanup the
+database with the argument --reset-database or to set a new
+admin password with --set-admin.
+It can be run with the --disable-auth parameter to do local
+tests without authentication or to reset the admin password.'''
 import argparse
 import getpass
 import sys
@@ -22,15 +29,21 @@ def build_parser():
 def main(args, session=None):
     app = wenuapi.core.build_app(disable_auth=args.disable_auth)
     if args.reset_database:
+        # --reset-database drops all tables and creates them again.
         Base.metadata.drop_all(app.data.driver.engine)
         Base.metadata.create_all(app.data.driver.engine)
     elif args.set_admin:
+        # --set-admin sets a password (asked interactively) for the admin user,
+        # if the admin user doesn't exist it is created.
         session = app.data.driver.session if session is None else session
         passwd = getpass.getpass('Password:')
         User.set_admin(passwd, session=session)
     elif args.serve:
+        # Starts a standalone server for development purposes.
         app.run(host=args.addr, port=args.port, debug=args.debug)
 
+# Run with settings provided on command line if this is a script, otherwise
+# create an app instance for a WSGI server.
 if __name__ == '__main__':
     parser = build_parser()
     args = parser.parse_args(sys.argv[1:])

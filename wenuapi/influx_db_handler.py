@@ -1,3 +1,6 @@
+'''This module allows to use InfluxDB instead of a table in a relational
+DB as the source of information for sensor measurements'''
+
 from influxdb import InfluxDBClient
 from .auth.token_auth import requires_auth
 from flask import request
@@ -17,7 +20,10 @@ translator = {
             'time': 'time',
         }
 
-def make_query(query,client):
+def make_query(query, client):
+    '''Given a query string and a InfluxDBClient makes a query to
+    InfluxDB and returns the results in a format compatible with
+    EVE_SQLAlchemy'''
     result = client.query(query);
     #print result
     measurements = []
@@ -56,8 +62,9 @@ def reParser(string):
 
 def flask_to_influxdb_query(args, translator=translator):
     '''
-    Devuelve un string con la consulta generada a partir
-    de los parametros recibidos.
+    Devuelve un string con la consulta InfluxDB generada a partir
+    de los parametros recibidos. Los parámetros recibidos
+    emulan los filtros usados por EVE.
     Translator se usa si de debe utilizar otro traductor,
     como es en el caso de los test de unidad.
     '''
@@ -104,15 +111,25 @@ def flask_to_influxdb_query(args, translator=translator):
     return query
 
 class InfluxDBHandler(object):
+    '''Instances of this class inserts a /measurement route to a flask
+    application that fetches data from InfluxDB and encodes it as if it
+    where a DB entry encoded by EVE_SQLAlchemy.
+    It allows to transparently use either a relational DB or InfluxDB to
+    store the measurements.
+    '''
     def __init__(self, host, port, username, password, db, app):
         self.host = host
         self.username = username
         self.password = password
+        # Setup a InfluxDB client
         self.influx = InfluxDBClient(host, port, username, password, db)
+        # Add a route to the app to query information about measurements
         app.route('/measurement', methods=['GET'])(self.list)
 
     @requires_auth
     def list(self):
+        '''Returns measurements encoded in JSON. The arguments in the
+        request are used to filter which measurements to return.'''
         query_filter = flask_to_influxdb_query(request.args)
         query = "SELECT * FROM medicion {} ".format(query_filter)
         #print query

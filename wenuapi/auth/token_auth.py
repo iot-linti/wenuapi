@@ -30,6 +30,9 @@ def authenticate():
     abort(401, description='Please provide proper credentials', response=resp)
 
 def requires_auth(f):
+    '''This decorator makes a route to require a loggedin client.
+    If the client making the request logged in it returns a response with a
+    401 HTTP error'''
     @wraps(f)
     def decorated(*args, **kwargs):
         auth = request.authorization

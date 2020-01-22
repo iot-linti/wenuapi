@@ -38,6 +38,7 @@ def add_role(docs):
 def set_on_insert_account_token(app):
     '''
     Se llama desde core, agrega las respuestas a los eventos.
+    Usa EVE event hooks.
     '''
     app.on_insert_user += add_token
     app.on_inserted_user += add_role

@@ -25,8 +25,10 @@ satisfied(){
 }
 
 map(){
+    local PREPEND="$1"
+    shift
     for arg in "$@"; do
-        printf "%s" "-r $arg"
+        printf " $PREPEND $arg  "
     done
     echo
 }

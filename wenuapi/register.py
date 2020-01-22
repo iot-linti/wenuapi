@@ -1,4 +1,6 @@
 # coding=utf-8
+'''Browseable route to login and fetch an api key from the API'''
+
 from functools import wraps
 import json
 import base64
@@ -40,7 +42,7 @@ def log_user(app):
         Se utiliza para renovar el token de un usuario, sin necedidad de
         enviar el usuario y contraseña
         '''
-        
+
         method = request.method
         resource = request.path
         auth = request.authorization

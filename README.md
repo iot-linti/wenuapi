@@ -13,9 +13,9 @@ clientes.
 Instalación del servidor
 ------------------------
 
-TODO: setup.py
-
-TODO: ejemplos de systemd y configuración
+```
+sudo ./scripts/install.sh
+```
 
 Instalación del cliente
 ------------------------

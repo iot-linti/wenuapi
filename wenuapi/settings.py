@@ -17,6 +17,7 @@ from eve_sqlalchemy.decorators import registerSchema
 from secrets import database_username, database_password
 from secrets import influxdb_username, influxdb_password
 
+# Basic configuration
 use_influxdb = True
 influxdb_host = 'influxdb.linti.unlp.edu.ar'
 influxdb_port = '8086'
@@ -30,6 +31,7 @@ database_uri = 'mysql://{}:{}@localhost/wenuapi'.format(
 # Only used in measurement by the moment
 realm = 'eve'
 
+# Register SQL_Alchemy schemas in EVE
 registerSchema(User.__tablename__)(User)
 registerSchema(Action.__tablename__)(Action)
 registerSchema(Level.__tablename__)(Level)
@@ -50,7 +52,7 @@ camera = Camera._eve_schema['camera']
 alert = Alert._eve_schema['alert']
 basicIPCamera = BasicIPCamera._eve_schema['camera']
 
-
+# Setup allowed methods and roles for each endpoint
 action.update({
     'allowed_roles': ['admin', 'user'],
     'allowed_item_roles': ['admin', 'user'],
@@ -73,6 +75,8 @@ alert.update({
 })
 
 #data_relation permite devolver los roles de cada usuario
+
+# Only admin can access user and role information
 user.update({
     'allowed_roles': ['admin'],
     'allowed_item_roles': ['admin'],
@@ -138,6 +142,7 @@ SETTINGS = {
 SETTINGS['DOMAIN']['user']['datasource']['projection']['password'] = 0
 SETTINGS['DOMAIN']['user']['datasource']['projection']['token'] = 0
 
+# These settings can be overrided by a local_settings.py module if present
 try:
     from local_settings import *
 except ImportError:
